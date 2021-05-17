@@ -22,6 +22,22 @@
   * @import "components/buttons";
   * @import "components/forms";
   */
+  .section-heading-xl{
+    @apply text-xl font-bold;
+  };
+  .section-heading-xl-italics{
+    @apply section-heading-xl italic;
+  };
+
+  .section-heading-2xl{
+    @apply text-2xl font-bold;
+  };
+  .section-heading-2xl-italics{
+    @apply section-heading-2xl italic;
+  };
+
+
+
  
  /**
   * This injects all of Tailwind's utility classes, generated based on your
@@ -32,6 +48,10 @@
   * @import "tailwindcss/utilities";
   */
  @tailwind utilities;
+
+ .profile-entry{
+   @apply flex flex-row flex-wrap py-2 sm:space-y-0 space-x-5 md:space-x-10 
+ };
  
  /**
   * Here you would add any custom utilities you need that don't come out of the
