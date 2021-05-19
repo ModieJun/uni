@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile'
 import Subprofile from '../views/Subprofile'
+import CreateSubprofile from '../views/CreateSubprofile'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path:'/subprofile/:id',
     name:"Subprofile",
     component:Subprofile
+  },
+  {
+    path:'/createsubprofile',
+    name:"CreateSubprofile",
+    component:CreateSubprofile
   }
 ]
 

@@ -61,31 +61,40 @@
           </div>
         </div>
         <div class="profile-entry">
-           <div class="px-2">
+          <div class="px-2">
             <h2>GPA</h2>
             <p>{{ education.gpa }}</p>
-          </div> 
-           <div class="px-2">
+          </div>
+          <div class="px-2">
             <h2>Start</h2>
-            <p>{{ education.start}}</p>
-          </div> 
-           <div class="px-2">
+            <p>{{ education.start }}</p>
+          </div>
+          <div class="px-2">
             <h2>End</h2>
-            <p>{{ education.end !=="" ?education.end : "To be completed" }}</p>
-          </div> 
+            <p>
+              {{ education.end !== "" ? education.end : "To be completed" }}
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Subprofile components  -->
     <section class="w-full flex flex-col my-5">
+      <div class="flex flex-row space-x-2">
         <h2 class="section-heading-xl">Sub Profiles</h2>
-        <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-2">
-            <div class="p-5 shadow-xl rounded-lg bg-gray-300" v-for="(subprofile,index) in profiledata.subprofiles" :key="subprofile.univeristy+subprofile.created_at">
-              <router-link :to="'subprofile/'+index">Link</router-link>
-                <p>{{subprofile}}</p>
-            </div>
+        <router-link to="/createsubprofile">+ Create new profile</router-link>
+      </div>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-2">
+        <div
+          class="p-5 shadow-xl rounded-lg bg-gray-300"
+          v-for="(subprofile, index) in profiledata.subprofiles"
+          :key="subprofile.univeristy + subprofile.created_at"
+        >
+          <router-link :to="'subprofile/' + index">Link</router-link>
+          <p>{{ subprofile }}</p>
         </div>
+      </div>
     </section>
   </div>
 </template>
@@ -109,18 +118,33 @@ export default {
           {
             university: "City Universtiy",
             degree: "Bachelors in Science",
-            programme:"Computer Science",
+            programme: "Computer Science",
             start: "12/12/2019",
             end: "",
             country: "Hong Kong",
             gpa: "3.5/5",
           },
         ],
-        subprofiles:[
-            {univeristy:"Hong Kong u",logo:"",created_at:"12/12/2021",status:"in progress"},
-            {univeristy:"Poly U",logo:"",created_at:"12/12/2021",status:"in progress"},
-            {univeristy:"MIT",logo:"",created_at:"12/12/2021",status:"submitted"}
-        ]
+        subprofiles: [
+          {
+            univeristy: "Hong Kong u",
+            logo: "",
+            created_at: "12/12/2021",
+            status: "in progress",
+          },
+          {
+            univeristy: "Poly U",
+            logo: "",
+            created_at: "12/12/2021",
+            status: "in progress",
+          },
+          {
+            univeristy: "MIT",
+            logo: "",
+            created_at: "12/12/2021",
+            status: "submitted",
+          },
+        ],
       },
     };
   },
