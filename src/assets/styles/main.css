@@ -6,6 +6,17 @@
   * @import "tailwindcss/components";
   */
  @tailwind components;
+ input{
+  @apply rounded-md focus:border-green-400;
+}
+
+input:checked{
+  @apply text-green-400 ;
+}
+
+select{
+  @apply rounded-md;
+}
  
  /**
   * Here you would add any of your custom component classes; stuff that you'd
@@ -22,6 +33,7 @@
   * @import "components/buttons";
   * @import "components/forms";
   */
+  
   .section-heading-xl{
     @apply text-xl font-bold;
   };
@@ -50,7 +62,7 @@
  @tailwind utilities;
 
  .profile-entry{
-   @apply flex flex-row flex-wrap py-2 sm:space-y-0 space-x-5 md:space-x-10 
+   @apply flex flex-row flex-wrap py-2 sm:space-y-0 space-x-5 md:space-x-10 ;
  };
  
  /**
