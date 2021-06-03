@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Nav />
+    <Nav :user="user" />
     <div class="container mx-auto w-full">
       <router-view :user="user"/>
     </div>

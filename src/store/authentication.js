@@ -9,25 +9,29 @@ const authentication ={
         }
     },
     actions:{
-        loginWithEmail:function({commit},user){
+        loginWithEmail: async function({commit},user){
             // login to firestore and update the user object
-            console.log(user);
-            Firebase.auth().signInWithEmailAndPassword(user.email,user.password)
+            var result = null;
+            await Firebase.auth().signInWithEmailAndPassword(user.email,user.password)
             .then(()=>{
-                commit("setUser",user)
+                commit("setUser",user);
+                result = {success:true};
             },
             (error)=>{
-                console.log(error)
-                return error;
-            })
+                result= {success:false, error:error};
+            });
+            return result;
         },
-        registerWithEmail:function({commit},user){
-            Firebase.auth().createUserWithEmailAndPassword(user.email,user.password)
+        registerWithEmail: async function({commit},user){
+            var result = null;
+            await Firebase.auth().createUserWithEmailAndPassword(user.email,user.password)
             .then(()=>{
                 commit("setUser",{user});
+                result = {success:true,}
             },(error)=>{
-                alert(error);
+                result ={success:false,error:error}
             });
+            return result;
         },
         logout:function({commit}){
             // Invalidate the user 

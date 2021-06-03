@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Profile from '../views/Profile'
 import Subprofile from '../views/Subprofile'
 import CreateSubprofile from '../views/CreateSubprofile'
+import Login from '../views/Login'
+import Register from '../views/Register'
 
 Vue.use(VueRouter)
 
@@ -35,6 +37,16 @@ const routes = [
     path:'/createsubprofile',
     name:"CreateSubprofile",
     component:CreateSubprofile
+  },
+  {
+    path:'/login',
+    name:"Login",
+    component:Login,
+  },
+  {
+    path:'/register',
+    name:"Register",
+    component:Register
   }
 ]
 
