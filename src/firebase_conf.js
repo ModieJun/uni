@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import firebase from "firebase";
 import "firebase/auth"
 const firebaseConfig = {
     // Your web app's Firebase configuration
@@ -16,3 +16,4 @@ export {
     db,
     Firebase
 }
+db.settings({ timestampsInSnapshots: true })
