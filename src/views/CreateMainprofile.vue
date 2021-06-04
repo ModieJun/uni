@@ -6,10 +6,18 @@
     <section
       class="max-w-md w-full shadow-lg rounded-sm p-5 flex flex-col space-y-5"
     >
-      <form>
+      <form class="contents">
+        <div
+          v-if="error"
+          class="bg-red-500 w-full py-1 italic font-bold text-sm text-center  rounded-sm"
+        >!! {{error}}</div>
         <vue-form-generator :model="model" :schema="mainprofileSchema">
         </vue-form-generator>
-        <button type="submit" class="btn-green" @click.prevent="submitProfile">
+        <button
+          type="submit"
+          class="inline btn-green btn-max"
+          @click.prevent="submitProfile"
+        >
           Create
         </button>
       </form>
@@ -21,6 +29,7 @@
 import "vue-form-generator/dist/vfg.css";
 import VueFormGenerator from "vue-form-generator";
 export default {
+  props: ["user"],
   components: {
     "vue-form-generator": VueFormGenerator.component,
   },
@@ -38,6 +47,7 @@ export default {
   },
   data: function () {
     return {
+      error: null,
       model: {
         name: "",
         surname: "",
@@ -94,9 +104,21 @@ export default {
     };
   },
   methods: {
-    submitProfile: function () {
-        console.log(this.isAllCompleted);
-        console.log(this.model)
+    submitProfile: async function () {
+      let data = {
+        user: this.user,
+        profile: this.model,
+      };
+      if (this.isAllCompleted) {
+        let result = await this.$store.dispatch("addMainProfile", data);
+        if (result) {
+          this.$router.replace("/profile");
+        } else {
+          console.log("Appending to profile failture");
+        }
+      }else{
+          this.error = "Form not completed";
+      }
     },
   },
 };

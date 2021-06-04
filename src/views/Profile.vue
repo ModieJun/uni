@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col overflow-hidden space-y-5">
     <section id="mainInfo" class="flex flex-col my-2">
-      <router-link to="/editprofile" class="max-w-xs inline btn-light-blue">edit Profile</router-link>
+      <div>
+        <router-link to="/editprofile" class="inline btn-light-blue btn-lg"
+          >edit Profile</router-link
+        >
+      </div>
       <h2 class="section-heading-xl">Basic Information</h2>
       <div class="profile-entry">
         <div class="px-2">
@@ -104,11 +108,11 @@
 // import {db} from '../firebase_conf'
 export default {
   name: "Profile",
-  props: ['user'],
+  props: ["user"],
   data: function () {
     return {
-      profile:null,
-      fs_subprofile:[],
+      profile: null,
+      fs_subprofile: [],
       profiledata: {
         main: {
           name: "Junjie",
