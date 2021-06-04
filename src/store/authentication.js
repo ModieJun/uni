@@ -4,7 +4,7 @@ const authentication ={
         user:null
     },
     mutations:{
-        setUser:function(state,user){
+        setUser(state,user){
             state.user=user;
         }
     },
@@ -14,7 +14,7 @@ const authentication ={
             var result = null;
             await Firebase.auth().signInWithEmailAndPassword(user.email,user.password)
             .then((userRef)=>{
-                commit("setUser",userRef.user);
+                commit("setUser",userRef.user.toJSON());
                 result = {success:true};
             },
             (error)=>{
@@ -26,7 +26,7 @@ const authentication ={
             var result = null;
             await Firebase.auth().createUserWithEmailAndPassword(user.email,user.password)
             .then((userRef)=>{
-                commit("setUser",userRef.user);
+                commit("setUser",userRef.user.toJSON());
                 result = {success:true,}
             },(error)=>{
                 result ={success:false,error:error}
