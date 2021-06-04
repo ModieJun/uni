@@ -1,7 +1,7 @@
 import {Firebase} from "../firebase_conf"
 const authentication ={
     state:{
-        user:""
+        user:null
     },
     mutations:{
         setUser:function(state,user){
@@ -13,8 +13,8 @@ const authentication ={
             // login to firestore and update the user object
             var result = null;
             await Firebase.auth().signInWithEmailAndPassword(user.email,user.password)
-            .then(()=>{
-                commit("setUser",user);
+            .then((userRef)=>{
+                commit("setUser",userRef.user);
                 result = {success:true};
             },
             (error)=>{
@@ -42,7 +42,11 @@ const authentication ={
                 console.log("Error on logout : "+ error);
             });
         }
-        
+    },
+    getters:{
+        user:state=>{
+            return state.user
+        }
     }
 }
 
