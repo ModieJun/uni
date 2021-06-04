@@ -16,12 +16,12 @@
           </button>
         </div>
         <div class="flex flex-row space-x-2" v-else>
-          <router-link to="/login" class="bg-blue-500 hover:bg-blue-400 btn"
+          <router-link to="/login" class="bg-green-500 hover:green-blue-400 btn"
             >Login</router-link
           >
           <router-link
             to="/register"
-            class="bg-green-500 hover:bg-green-400 btn"
+            class="bg-blue-500 hover:bg-blue-400 btn"
             >Register</router-link
           >
         </div>

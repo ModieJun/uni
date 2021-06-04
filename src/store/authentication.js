@@ -25,8 +25,8 @@ const authentication ={
         registerWithEmail: async function({commit},user){
             var result = null;
             await Firebase.auth().createUserWithEmailAndPassword(user.email,user.password)
-            .then(()=>{
-                commit("setUser",{user});
+            .then((userRef)=>{
+                commit("setUser",userRef.user);
                 result = {success:true,}
             },(error)=>{
                 result ={success:false,error:error}

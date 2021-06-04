@@ -10,6 +10,7 @@ const persistedStates = createPersistedState({
 })
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   modules: {
     auth:authentication,
   },
