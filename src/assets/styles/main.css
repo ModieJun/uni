@@ -49,12 +49,30 @@ select{
   };
 
   .btn {
-    @apply rounded-md px-5 py-2 shadow-lg bg-gray-200 hover:bg-gray-100;
+    @apply block rounded-md px-5 py-2 shadow-lg bg-gray-200 hover:bg-gray-100;
   };
 
   .btn-large{
     @apply px-10 py-2 btn;
   };
+
+  .btn-red{
+    @apply bg-red-400 hover:bg-red-300 btn;
+  };
+
+  .btn-blue{
+    @apply bg-blue-500 hover:bg-blue-400 btn;
+  };
+
+  .btn-light-blue{
+    @apply bg-blue-300 hover:bg-blue-200 btn;
+  }
+
+  .btn-green{
+    @apply bg-green-400 hover:bg-green-300 btn;
+  }
+
+  
 
 
  
