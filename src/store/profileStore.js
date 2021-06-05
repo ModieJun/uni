@@ -14,6 +14,10 @@ const profileStore = {
         addSubprofile(state, newSubprofile) {
             state.subprofiles.push(newSubprofile);
         },
+        deleteSubprofile(state,id){
+            let index =state.subprofiles.map(x=>{return x.id}).indexOf(id);
+            state.subprofiles.splice(index,1)
+        },
         ...vuexfireMutations
     },
     actions: {
@@ -34,18 +38,31 @@ const profileStore = {
             return result;
         },
         addSubprofile: async function ({ commit }, data) {
-            let newSubprofile ={ subprofile: data.subprofile,status:"editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
+            var newSubprofile = { subprofile: data.subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
                 .add(newSubprofile)
                 .then((data) => {
-                    console.log(data)
+                    newSubprofile['id'] = data.id;
                     commit("addSubprofile", newSubprofile);
                     return { success: true }
                 }, error => {
                     console.log("Error: ", error);
                     return { success: false, error: error };
                 });
+            return result;
+        },
+        deleteSubprofile: async function ({ commit }, data) {
+            let result = await db.collection("users").doc(data.user.uid)
+                .collection("subprofiles")
+                .doc(data.id)
+                .delete()
+                .then(() => {
+                    commit("deleteSubprofile", data.id); return { success: true }
+                },
+                    (error) => {
+                        return { success: false, error: error }
+                    });
             return result;
         },
         // removeSubprofile:function({commit},user,profile){

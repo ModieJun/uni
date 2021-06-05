@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     createSubprofile: async function () {
-      console.log(this.isAllComplete)
       if (this.isAllComplete) {
         let result = await this.$store.dispatch("addSubprofile", {
           user: this.user,

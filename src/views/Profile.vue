@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col overflow-hidden space-y-5">
     <section id="mainInfo" class="flex flex-col my-2">
+      <!-- {{user}} -->
       <div>
         <router-link to="/editprofile" class="inline btn-light-blue btn-lg"
           >edit Profile</router-link
@@ -88,16 +89,17 @@
     <section class="w-full flex flex-col my-5">
       <div class="flex flex-row space-x-2">
         <h2 class="section-heading-xl">Sub Profiles</h2>
-        <router-link to="/createsubprofile">+ Create new profile</router-link>
+        <router-link to="/createsubprofile" class="btn btn-green">+ Create new profile</router-link>
       </div>
       <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-2">
         <div
           class="p-5 shadow-xl rounded-lg bg-gray-300"
-          v-for="(subprofile, index) in profiledata.subprofiles"
-          :key="subprofile.univeristy + subprofile.created_at"
+          v-for="(ref, index) in subprofiles"
+          :key="ref.subprofile.univeristy"
         >
-          <router-link :to="'subprofile/' + index">Link</router-link>
-          <p>{{ subprofile }}</p>
+          <router-link :to="'subprofile/' + index" class="btn btn-light-blue text-center">Link</router-link>
+          <p>{{ ref }}</p>
+          <button class="btn btn-red" @click.prevent="$store.dispatch('deleteSubprofile',{user:user, id:ref.id})">Delete</button>
         </div>
       </div>
     </section>
@@ -106,13 +108,18 @@
 
 <script>
 // import {db} from '../firebase_conf'
+import {mapGetters} from 'vuex'
 export default {
   name: "Profile",
   props: ["user"],
+  computed:{
+    ...mapGetters({
+      subprofiles:'subprofiles'
+    })
+  },
   data: function () {
     return {
       profile: null,
-      fs_subprofile: [],
       profiledata: {
         main: {
           name: "Junjie",
@@ -134,7 +141,7 @@ export default {
             gpa: "3.5/5",
           },
         ],
-        subprofiles: [
+        temp_subprofile: [
           {
             univeristy: "Hong Kong u",
             logo: "",
