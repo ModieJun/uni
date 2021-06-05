@@ -2,6 +2,7 @@
   <div class="my-5">
     <h2 class="text-lg font-bold text-center">Create a new Subprofile</h2>
     <div class="container mx-auto max-w-2xl w-full p-5 shadow-lg">
+      <div v-if="error" class="text-center font-light text-sm italic bg-red-400 rounded ">{{error}}</div>
       <form-wizard
         title="Subprofile creation"
         subtitle="Select the university"
@@ -33,7 +34,7 @@
 <script>
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
-import "vue-form-generator/dist/vfg.css";
+// import "vue-form-generator/dist/vfg.css";
 import VueFormGenerator from "vue-form-generator";
 export default {
   name: "CreateSubprofile",
@@ -42,18 +43,36 @@ export default {
     TabContent,
     "vue-form-generator": VueFormGenerator.component,
   },
-  methods:{
-    createSubprofile:function(){
-      alert("Submittion complete");
-      //submit to firebase + display loading progress -> the push router to hom 
-      this.$router.replace("/profile")
-    }
+  props: ["user"],
+  computed: {
+    isAllComplete() {
+      return this.model.university !== "" && this.model.level !== "";
+    },
+  },
+  methods: {
+    createSubprofile: async function () {
+      console.log(this.isAllComplete)
+      if (this.isAllComplete) {
+        let result = await this.$store.dispatch("addSubprofile", {
+          user: this.user,
+          subprofile: this.model,
+        });
+        if (result.success) {
+          this.$router.replace("/profile");
+        } else {
+          this.error=result.error;
+        }
+      }else{
+        this.error="Please complete all steps"
+      }
+    },
   },
   data: function () {
     return {
+      error: "",
       model: {
         university: "",
-        level:"",
+        level: "",
         prefix: false,
       },
       firstTabSchema: {
@@ -72,11 +91,11 @@ export default {
             required: true,
           },
           {
-            type:"select",
-            label:"Level",
-            model:"level",
-            values:["Bachelor","Masters","PHD","Doctor"]
-          }
+            type: "select",
+            label: "Level",
+            model: "level",
+            values: ["Bachelor", "Masters", "PHD", "Doctor"],
+          },
         ],
       },
       secondTabSchema: {
@@ -85,8 +104,8 @@ export default {
             type: "checkbox",
             label: "Prefix Files",
             model: "prefix",
-            default:false,
-            styleClasses:"flex flex-row space-x-2"
+            default: false,
+            styleClasses: "flex flex-row space-x-2",
           },
         ],
       },

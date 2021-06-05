@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {createLogger} from 'vuex'
 import authentication from './authentication'
 import createPersistedState from 'vuex-persistedstate'
 import profileStore from './profileStore'
@@ -16,5 +17,5 @@ export default new Vuex.Store({
     auth:authentication,
     profile:profileStore
   },
-  plugins:[persistedStates]
+  plugins:[persistedStates,createLogger()]
 })

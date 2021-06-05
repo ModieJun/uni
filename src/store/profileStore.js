@@ -12,7 +12,7 @@ const profileStore = {
             state.profile = newProfile;
         },
         addSubprofile(state, newSubprofile) {
-            state.subprofile.push(newSubprofile);
+            state.subprofiles.push(newSubprofile);
         },
         ...vuexfireMutations
     },
@@ -23,9 +23,8 @@ const profileStore = {
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("mainprofile")
                 .add(newProfile)
-                .then((data) => {
+                .then(() => {
                     //get changes -> update the local store
-                    console.log(data);
                     commit("addMainProfile", newProfile.profile);
                     return { success: true };
                 }, (error) => {
@@ -34,16 +33,20 @@ const profileStore = {
                 });
             return result;
         },
-        addSubprofile: function ({ commit }, data) {
-            db.collection("users").doc(data.user.uid)
+        addSubprofile: async function ({ commit }, data) {
+            let newSubprofile ={ subprofile: data.subprofile,status:"editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
+            let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
-                .add({ subprofie: data.subprofile, created_at: firebase.firestore.FieldValue.serverTimestamp() })
-                .then((ref) => {
-                    console.log(ref);
-                    commit("addSubprofile", data.subprofie);
+                .add(newSubprofile)
+                .then((data) => {
+                    console.log(data)
+                    commit("addSubprofile", newSubprofile);
+                    return { success: true }
                 }, error => {
                     console.log("Error: ", error);
-                })
+                    return { success: false, error: error };
+                });
+            return result;
         },
         // removeSubprofile:function({commit},user,profile){
 
@@ -51,6 +54,11 @@ const profileStore = {
         // updateSubprofile:function({commit},user,profile){
 
         // },
+        /**
+         *  When usiing bindig we need to ensure that we do not mutate the local store - will not be the same as the firebase  
+         *  When making actions - append to the firebase 
+         *  Firebase would auto sync with the firebase firestore database
+         */
         bindUserProfile: function (user) {
             firestoreAction(({ bindFirestoreRef }) => {
                 return bindFirestoreRef('profile', db.collection("users").doc(user.uid).collection('mainprofile'));
