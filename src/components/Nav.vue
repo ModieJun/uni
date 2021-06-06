@@ -36,6 +36,7 @@ export default {
   methods: {
     logout: function () {
       this.$store.dispatch("logout");
+      this.$store.dispatch('unbindUserProfileAndSubprofiles')
       if (this.$route.name !== "Home") {
         this.$router.push("/");
       } else {

@@ -4,8 +4,8 @@ import { vuexfireMutations, firestoreAction } from 'vuexfire'
 // https://vuex.vuejs.org/guide/actions.html#composing-actions - async actions using promise 
 const profileStore = {
     state: {
-        tempProfile:null, //used when creating a new profile - that has not been submitted 
-        profile: null,
+        tempProfile: null, //used when creating a new profile - that has not been submitted 
+        profile: [],//it will be an array
         subprofiles: []
     },
     mutations: {
@@ -15,14 +15,21 @@ const profileStore = {
         addSubprofile(state, newSubprofile) {
             state.subprofiles.push(newSubprofile);
         },
-        deleteSubprofile(state,id){
-            let index =state.subprofiles.map(x=>{return x.id}).indexOf(id);
-            state.subprofiles.splice(index,1)
+        deleteSubprofile(state, id) {
+            let index = state.subprofiles.map(x => { return x.id }).indexOf(id);
+            state.subprofiles.splice(index, 1)
+        },
+        staleMutation(state, paylaod) {
+            state.tempProfile = paylaod
+        },
+        resetModule(state) {
+            state.profile = [];
+            state.subprofile = [];
         },
         ...vuexfireMutations
     },
     actions: {
-        addMainProfile: async function ({ commit }, data) {
+        async addMainProfile({ commit }, data) {
             let newProfile = { profile: data.profile, created_at: firebase.firestore.FieldValue.serverTimestamp() };
             // add the main profile to the cloud
             let result = await db.collection("users").doc(data.user.uid)
@@ -38,7 +45,7 @@ const profileStore = {
                 });
             return result;
         },
-        addSubprofile: async function ({ commit }, data) {
+        async addSubprofile({ commit }, data) {
             var newSubprofile = { subprofile: data.subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
@@ -53,7 +60,7 @@ const profileStore = {
                 });
             return result;
         },
-        deleteSubprofile: async function ({ commit }, data) {
+        async deleteSubprofile({ commit }, data) {
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
                 .doc(data.id)
@@ -77,26 +84,39 @@ const profileStore = {
          *  When making actions - append to the firebase 
          *  Firebase would auto sync with the firebase firestore database
          */
-        bindUserProfile: function (user) {
-            firestoreAction(({ bindFirestoreRef }) => {
-                return bindFirestoreRef('profile', db.collection("users").doc(user.uid).collection('mainprofile'));
-            })
+        bindProfileModule({dispatch},user){
+            dispatch("bindUserProfile",user);
+            dispatch("bindSubprofile",user)
         },
-        bindSubprofile: function (user) {
-            firestoreAction(({ bindFirestoreRef }) => {
-                return bindFirestoreRef('subprofiles', db.collection("users").doc(user.uid).collection('subprofiles'))
-            });
-        },
-        unbindUserProfileAndSubprofiles: function () {
+        bindUserProfile: firestoreAction(({ bindFirestoreRef }, user) => {
+            return bindFirestoreRef('profile', db.collection("users").doc(user.uid).collection('mainprofile'));
+        }),
+        bindSubprofile: firestoreAction(({ bindFirestoreRef },user) => {
+            return bindFirestoreRef('subprofiles', db.collection("users").doc(user.uid).collection('subprofiles'))
+        }),
+        unbindUserProfileAndSubprofiles({ dispatch }) {
             firestoreAction(({ unbindFirestoreRef }) => {
                 unbindFirestoreRef('profile');
                 unbindFirestoreRef('subprofiles');
             })
+            dispatch("cleanProfile");
+        },
+        /**
+         *  Used to rese the module state - once the user logs out, the exsting data should not be kept 
+         *  in the store 
+         */
+        cleanProfile: function ({ commit }) {
+            // this.unbindUserProfileAnd Subprofile should be executed and the stores should be reset
+            commit('resetModule')
         }
     },
     getters: {
         profile: (state) => {
-            return state.profile;
+            /**
+             *  ONly one main profile exists but based on the firebase bindings collections are in an array
+             *  thus return only the first item
+             */
+            return state.profile.length!==0 ? state.profile[0].profile : null;
         },
         subprofiles: (state) => {
             return state.subprofiles;

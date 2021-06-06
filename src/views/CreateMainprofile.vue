@@ -15,15 +15,6 @@
         <tab-content title="Personal Information" lazy="true">
           <vue-form-generator :model="model" :schema="mainprofileSchema">
           </vue-form-generator>
-          <FormulateInput
-            label="Email"
-            type="email"
-            name="email"
-            validation="required|email"
-            label-class="text-red"
-            input-class="w-full rounded-lg "
-            
-          />
           <!-- <button
             type="submit"
             class="inline btn-green btn-max"
@@ -74,10 +65,16 @@ export default {
       );
     },
     isEducationDateValid: function () {
-      return (
-        new Date(this.model.education.dateStart) <
-        new Date(this.model.education.dateEnd)
-      );
+      if (
+        this.model.education.dateStart !== "" &&
+        this.model.education.dateEnd !== ""
+      ) {
+        return (
+          new Date(this.model.education.dateStart) <
+          new Date(this.model.education.dateEnd)
+        );
+      }
+      return false;
     },
     profileExist: function () {
       return this.$store.getters.profile != null;
@@ -86,7 +83,9 @@ export default {
   mounted() {
     //get the profile from profile - if there is profile in the store
     //   console.log(this.$store.getters.profile);
-    this.model = this.$store.getters.profile;
+    if (this.profileExist) {
+      this.model = this.$store.getters.profile;
+    }
   },
   data: function () {
     return {

@@ -31,6 +31,7 @@ export default {
             let result =  await this.$store.dispatch("loginWithEmail",user); 
             this.loading = false;
             if(result.success == true){
+                this.$emit('login');
                 this.$router.replace("/");
             }else{
                 this.error = result.error

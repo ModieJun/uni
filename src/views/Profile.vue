@@ -54,30 +54,30 @@
           <div class="profile-entry">
             <div class="px-2">
               <h2>University</h2>
-              <p>{{ profile.education.university }}</p>
+              <p>{{ this.profile.education.university }}</p>
             </div>
             <div class="px-2">
               <h2>Degree</h2>
-              <p>{{ profile.education.degree }}</p>
+              <p>{{ this.profile.education.degree }}</p>
             </div>
             <div class="px-2">
               <h2>Programme</h2>
-              <p>{{ profile.education.programme }}</p>
+              <p>{{ this.profile.education.programme }}</p>
             </div>
           </div>
           <div class="profile-entry">
             <div class="px-2">
               <h2>GPA</h2>
-              <p>{{ profile.education.gpa }}</p>
+              <p>{{ this.profile.education.gpa }}</p>
             </div>
             <div class="px-2">
               <h2>Start</h2>
-              <p>{{ profile.education.dateStart }}</p>
+              <p>{{ this.profile.education.dateStart }}</p>
             </div>
             <div class="px-2">
               <h2>End</h2>
               <p>
-                {{ profile.education.dateEnd !== "" ? education.end : "To be completed" }}
+                {{ this.profile.education.dateEnd !== "" ? this.profileeducation.end : "To be completed" }}
               </p>
           </div>
         </div>
