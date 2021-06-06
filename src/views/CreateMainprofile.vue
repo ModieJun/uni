@@ -10,7 +10,7 @@
         backButtonText="Back"
         finishButtonText="Finish"
         shape="tab"
-        @on-complete="this.profileExist ? submitProfile : editProfile"
+        @on-complete="submitProfile"
       >
         <tab-content title="Personal Information" lazy="true">
           <vue-form-generator :model="model" :schema="mainprofileSchema">
@@ -196,6 +196,10 @@ export default {
   },
   methods: {
     submitProfile: async function () {
+    if (this.profileExist){
+        this.editProfile()
+        return;
+    }
       let data = {
         user: this.user,
         profile: this.model,

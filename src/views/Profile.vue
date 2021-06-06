@@ -2,7 +2,7 @@
   <div class="flex flex-col overflow-hidden space-y-5">
     <div v-if="!profile" class="my-5">
       <router-link to="/editprofile" class="inline btn-light-blue btn-lg"
-        >edit Profile</router-link
+        >Add Main Profile</router-link
       >
     </div>
     <div class="contents" v-else>
@@ -77,7 +77,7 @@
             <div class="px-2">
               <h2>End</h2>
               <p>
-                {{ this.profile.education.dateEnd !== "" ? this.profileeducation.end : "To be completed" }}
+                {{ this.profile.education.dateEnd !== "" ? this.profile.education.end : "To be completed" }}
               </p>
           </div>
         </div>

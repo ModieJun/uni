@@ -24,7 +24,7 @@ const profileStore = {
         },
         resetModule(state) {
             state.profile = [];
-            state.subprofile = [];
+            state.subprofiles = [];
         },
         ...vuexfireMutations
     },
@@ -37,7 +37,7 @@ const profileStore = {
                 .add(newProfile)
                 .then(() => {
                     //get changes -> update the local store
-                    commit("addMainProfile", newProfile.profile);
+                    commit("staleMutation", newProfile.profile);
                     return { success: true };
                 }, (error) => {
                     console.log("Error: ", error);
@@ -52,7 +52,7 @@ const profileStore = {
                 .add(newSubprofile)
                 .then((data) => {
                     newSubprofile['id'] = data.id;
-                    commit("addSubprofile", newSubprofile);
+                    commit("staleMutation", newSubprofile);
                     return { success: true }
                 }, error => {
                     console.log("Error: ", error);
@@ -66,7 +66,7 @@ const profileStore = {
                 .doc(data.id)
                 .delete()
                 .then(() => {
-                    commit("deleteSubprofile", data.id); return { success: true }
+                    commit("staleMutation", data.id); return { success: true }
                 },
                     (error) => {
                         return { success: false, error: error }
