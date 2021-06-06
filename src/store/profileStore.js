@@ -1,9 +1,10 @@
 import { db } from '../firebase_conf';
 import firebase from 'firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
-
+// https://vuex.vuejs.org/guide/actions.html#composing-actions - async actions using promise 
 const profileStore = {
     state: {
+        tempProfile:null, //used when creating a new profile - that has not been submitted 
         profile: null,
         subprofiles: []
     },
