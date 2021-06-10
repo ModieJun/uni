@@ -77,7 +77,7 @@
             <div class="px-2">
               <h2>End</h2>
               <p>
-                {{ this.profile.education.dateEnd !== "" ? this.profile.education.end : "To be completed" }}
+                {{ this.profile.education.dateEnd !== "" ? this.profile.education.dateEnd : "To be completed" }}
               </p>
           </div>
         </div>

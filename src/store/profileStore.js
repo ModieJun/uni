@@ -84,14 +84,14 @@ const profileStore = {
          *  When making actions - append to the firebase 
          *  Firebase would auto sync with the firebase firestore database
          */
-        bindProfileModule({dispatch},user){
-            dispatch("bindUserProfile",user);
-            dispatch("bindSubprofile",user)
+        bindProfileModule({ dispatch }, user) {
+            dispatch("bindUserProfile", user);
+            dispatch("bindSubprofile", user)
         },
         bindUserProfile: firestoreAction(({ bindFirestoreRef }, user) => {
             return bindFirestoreRef('profile', db.collection("users").doc(user.uid).collection('mainprofile'));
         }),
-        bindSubprofile: firestoreAction(({ bindFirestoreRef },user) => {
+        bindSubprofile: firestoreAction(({ bindFirestoreRef }, user) => {
             return bindFirestoreRef('subprofiles', db.collection("users").doc(user.uid).collection('subprofiles'))
         }),
         unbindUserProfileAndSubprofiles({ dispatch }) {
@@ -116,7 +116,7 @@ const profileStore = {
              *  ONly one main profile exists but based on the firebase bindings collections are in an array
              *  thus return only the first item
              */
-            return state.profile.length!==0 ? state.profile[0].profile : null;
+            return state.profile.length !== 0 ? state.profile[0].profile : null;
         },
         subprofiles: (state) => {
             return state.subprofiles;
