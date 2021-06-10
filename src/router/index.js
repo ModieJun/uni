@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile'
+import CreateMainprofile from '../views/CreateMainprofile'
 import Subprofile from '../views/Subprofile'
 import CreateSubprofile from '../views/CreateSubprofile'
 import Login from '../views/Login'
@@ -30,6 +31,14 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path:"/editprofile",
+    name:"CreateProfile",
+    component:CreateMainprofile,
+    meta:{
+      requiresAuth:true
     }
   },
   {

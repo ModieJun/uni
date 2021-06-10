@@ -16,7 +16,7 @@
           </button>
         </div>
         <div class="flex flex-row space-x-2" v-else>
-          <router-link to="/login" class="bg-green-500 hover:green-blue-400 btn"
+          <router-link to="/login" class="bg-green-500 hover:bg-green-400 btn"
             >Login</router-link
           >
           <router-link
@@ -36,6 +36,7 @@ export default {
   methods: {
     logout: function () {
       this.$store.dispatch("logout");
+      this.$store.dispatch('unbindUserProfileAndSubprofiles')
       if (this.$route.name !== "Home") {
         this.$router.push("/");
       } else {

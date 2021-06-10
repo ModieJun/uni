@@ -30,9 +30,10 @@ export default {
         let result = await this.$store.dispatch("registerWithEmail",newUser);
         this.loading = false;
         if (result.success==true){
+            this.$emit("register")
             this.$router.replace("/");
         }else{
-            this.error = result.error
+            this.error = result.error;
         }
       }
   }
