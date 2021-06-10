@@ -6,7 +6,7 @@ const profileStore = {
     state: {
         tempProfile: null, //used when creating a new profile - that has not been submitted 
         profile: [],//it will be an array
-        subprofiles: []
+        subprofiles: null, 
     },
     mutations: {
         addMainProfile(state, newProfile) {

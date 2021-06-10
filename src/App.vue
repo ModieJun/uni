@@ -17,9 +17,16 @@ export default {
   components: {
     Nav,
   },
+  created(){
+    if (this.authedUser && this.subprofiles===null){
+       console.log("binding profile ")
+      this.$store.dispatch("bindProfileModule",this.authedUser); 
+    }
+  },
   computed:{
     ...mapGetters({
       authedUser: 'user',
+      subprofiles: "subprofiles",
   })
   },
   data: function () {
@@ -31,10 +38,10 @@ export default {
         //login user awit success 
         
         //set other profile and subprofile bindings with firestoer
-        this.$store.dispatch('bindProfileModule',this.authedUser)
+        // this.$store.dispatch('bindProfileModule',this.authedUser)
       },
       register:function(){
-        this.$store.dispatch('bindProfileModule',this.authedUser)
+        // this.$store.dispatch('bindProfileModule',this.authedUser)
       },
       logout:function(){
         this.$store.dispatch("unbindUserProfileAndSubprofiles");
