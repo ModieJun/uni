@@ -36,12 +36,17 @@
           </div>
         </div>
       </div>
+      <div class="col-span-3 my-2 flex flex-row space-x-2 justify-evenly">
+          <button class=" btn-light-blue btn-lg" @click.prevent="save">Save</button>
+          <button class=" btn-green btn-lg " @click.prevent="submit">Submit</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Drag, Drop } from "vue-easy-dnd";
+import {mapGetters} from 'vuex';
 export default {
   name: "CreateSubprofile",
   components: {
@@ -49,6 +54,14 @@ export default {
     Drop,
   },
   methods: {
+    save(){
+      console.log("save for next time");
+      // prepare subprofile
+      this.$store.dispatch("updateSubprofile",{id:this.$route.params.id, completionblocks:this.completionblocks})
+    },
+    submit(){
+      console.log("Submit to the universtiy ");
+    },
     log: function (e) {
       console.log(e);
     },
@@ -67,6 +80,15 @@ export default {
       console.log(index);
       this.dragOverTemp[index] = event.data;
     },
+  },
+  computed:{
+    ...mapGetters({
+      getSubprofile:"subprofileByID"
+    }),
+    getSubprofileByID(){ // subprofile object and not an array 
+     const id = this.$route.params.id 
+     return this.getSubprofile(id);
+    }
   },
   data: function () {
     return {

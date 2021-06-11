@@ -76,9 +76,23 @@ const profileStore = {
         // removeSubprofile:function({commit},user,profile){
 
         // },
-        // updateSubprofile:function({commit},user,profile){
+        updateSubprofile:firestoreAction(({rootState,getters},payload)=>{ //payload = id , completionblock
+            const user = {...rootState.auth.user};
+            const subprofile = {...getters.subprofileByID(payload.id)}; //using this syntax will not yield enum id of the doc
+            subprofile.completionblocks= payload.completionblocks;
 
-        // },
+            return db.collection('users').doc(user.uid)
+                .collection('subprofiles').doc(payload.id) 
+                .set(subprofile)
+                .then(
+                    ()=>{
+                        return {success:true}
+                    },
+                    (error)=>{
+                        return {success:false, error:error}
+                    }
+                )
+        }),
         /**
          *  When usiing bindig we need to ensure that we do not mutate the local store - will not be the same as the firebase  
          *  When making actions - append to the firebase 
@@ -122,7 +136,9 @@ const profileStore = {
             return state.subprofiles;
         },
         subprofileByID: (state) => (id) => {
-            return state.subprofiles.find(subprofile => subprofile.id == id)
+            const subprofile = state.subprofiles.filter(e=> e.id ==id)
+            return subprofile.length===1 ? subprofile[0] : null;
+            // return state.subprofiles.find(subprofile => subprofile.subprofile.id == id)
         }
     }
 }
