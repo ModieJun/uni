@@ -53,6 +53,11 @@ export default {
     Drag,
     Drop,
   },
+  mounted(){
+    //TODO - Refresh page - the data is not loaded yet and page is presented - subprofiles are not loaded before this
+    //makes a deep copy 
+    this.completionblocks = JSON.parse(JSON.stringify(this.getSubprofileByID.subprofile.completionblocks));
+  },
   methods: {
     save(){
       console.log("save for next time");
@@ -110,23 +115,7 @@ export default {
           filetype: "pdf",
         },
       ],
-      completionblocks: [
-        {
-          requirementName: "Personal Statement",
-          requirementType: "docx/pdf",
-          requirementItem: null,
-        },
-        {
-          requirementName: "CV",
-          requirementType: "docx/pdf",
-          requirementItem: null,
-        },
-        {
-          requirementName: "Reference Letter",
-          requirementType: "docx/pdf",
-          requirementItem: null,
-        },
-      ],
+      completionblocks:[],
     };
   },
 };

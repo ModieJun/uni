@@ -129,11 +129,10 @@ export default {
   name: "Profile",
   props: ["user"],
   created(){
-    if(this.isLoading){
-      //Only bind to the profile store if the pages loses its content -> from refresh
-      console.log("binding profile ")
-      this.$store.dispatch("bindProfileModule",this.user); 
-    }
+    // if(this.isLoading){
+    //   //Only bind to the profile store if the pages loses its content -> from refresh
+    //   this.$store.dispatch("bindProfileModule",this.user); 
+    // }
   },
   computed: {
     isLoading(){

@@ -2,7 +2,8 @@
   <div id="app">
     <Nav :user="authedUser" />
     <div class="container mx-auto w-full">
-      <router-view :user="authedUser" @login="login" @register="register"/>
+      <router-view :user="authedUser" @login="login" @register="register" v-if="!isLoading"/>
+      <div v-else>LOADING</div>
     </div>
   </div>
 </template>
@@ -18,12 +19,14 @@ export default {
     Nav,
   },
   created(){
-    if (this.authedUser && this.subprofiles===null){
-       console.log("binding profile ")
+    if (this.authedUser || this.isLoading){
       this.$store.dispatch("bindProfileModule",this.authedUser); 
     }
   },
   computed:{
+    isLoading(){
+      return this.subprofiles===null
+    },
     ...mapGetters({
       authedUser: 'user',
       subprofiles: "subprofiles",
@@ -35,10 +38,8 @@ export default {
   },
   methods:{
      login:function(){
-        //login user awit success 
-        
-        //set other profile and subprofile bindings with firestoer
-        // this.$store.dispatch('bindProfileModule',this.authedUser)
+        //bind to the profile after loggin in 
+        this.$store.dispatch('bindProfileModule',this.authedUser)
       },
       register:function(){
         // this.$store.dispatch('bindProfileModule',this.authedUser)

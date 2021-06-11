@@ -1,6 +1,7 @@
 import { db } from '../firebase_conf';
 import firebase from 'firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import {getRequirements} from '../helper/requirementsHelper';
 // https://vuex.vuejs.org/guide/actions.html#composing-actions - async actions using promise 
 const profileStore = {
     state: {
@@ -46,7 +47,9 @@ const profileStore = {
             return result;
         },
         async addSubprofile({ commit }, data) {
-            var newSubprofile = { subprofile: data.subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
+            const subprofile = data.subprofile;
+            subprofile.completionblocks = getRequirements('general'); //TODO - need to assing to university name and not the general one 
+            const newSubprofile = { subprofile: subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
                 .add(newSubprofile)
@@ -78,9 +81,8 @@ const profileStore = {
         // },
         updateSubprofile:firestoreAction(({rootState,getters},payload)=>{ //payload = id , completionblock
             const user = {...rootState.auth.user};
-            const subprofile = {...getters.subprofileByID(payload.id)}; //using this syntax will not yield enum id of the doc
-            subprofile.completionblocks= payload.completionblocks;
-
+            const subprofile = JSON.parse(JSON.stringify(getters.subprofileByID(payload.id))); //create a deep copy so that there is not mutation violation
+            subprofile.subprofile.completionblocks= payload.completionblocks; 
             return db.collection('users').doc(user.uid)
                 .collection('subprofiles').doc(payload.id) 
                 .set(subprofile)
