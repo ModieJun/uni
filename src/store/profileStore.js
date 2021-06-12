@@ -138,6 +138,9 @@ const profileStore = {
             return state.subprofiles;
         },
         subprofileByID: (state) => (id) => {
+            if (state.subprofiles===null){
+                return null;
+            }
             const subprofile = state.subprofiles.filter(e=> e.id ==id)
             return subprofile.length===1 ? subprofile[0] : null;
             // return state.subprofiles.find(subprofile => subprofile.subprofile.id == id)

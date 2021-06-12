@@ -2,8 +2,7 @@
   <div id="app">
     <Nav :user="authedUser" />
     <div class="container mx-auto w-full">
-      <router-view :user="authedUser" @login="login" @register="register" v-if="!isLoading"/>
-      <div v-else>LOADING</div>
+      <router-view :user="authedUser" @login="login" @register="register"/>
     </div>
   </div>
 </template>
@@ -18,14 +17,14 @@ export default {
   components: {
     Nav,
   },
-  created(){
+  mounted(){
     if (this.authedUser || this.isLoading){
       this.$store.dispatch("bindProfileModule",this.authedUser); 
     }
   },
   computed:{
     isLoading(){
-      return this.subprofiles===null
+      return this.authedUser!==null&&this.subprofiles===null
     },
     ...mapGetters({
       authedUser: 'user',
@@ -37,15 +36,16 @@ export default {
     };
   },
   methods:{
-     login:function(){
+     login(){
         //bind to the profile after loggin in 
         this.$store.dispatch('bindProfileModule',this.authedUser)
       },
-      register:function(){
+      register(){
+        console.log("Register")
         // this.$store.dispatch('bindProfileModule',this.authedUser)
       },
       logout:function(){
-        this.$store.dispatch("unbindUserProfileAndSubprofiles");
+        // this.$store.dispatch("unbindUserProfileAndSubprofiles");
       }
   }
 };
