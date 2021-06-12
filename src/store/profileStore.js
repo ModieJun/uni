@@ -1,12 +1,13 @@
 import { db } from '../firebase_conf';
 import firebase from 'firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import {getRequirements} from '../helper/requirementsHelper';
 // https://vuex.vuejs.org/guide/actions.html#composing-actions - async actions using promise 
 const profileStore = {
     state: {
         tempProfile: null, //used when creating a new profile - that has not been submitted 
         profile: [],//it will be an array
-        subprofiles: []
+        subprofiles: null, 
     },
     mutations: {
         addMainProfile(state, newProfile) {
@@ -46,7 +47,9 @@ const profileStore = {
             return result;
         },
         async addSubprofile({ commit }, data) {
-            var newSubprofile = { subprofile: data.subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
+            const subprofile = data.subprofile;
+            subprofile.completionblocks = getRequirements('general'); //TODO - need to assing to university name and not the general one 
+            const newSubprofile = { subprofile: subprofile, status: "editing", created_at: firebase.firestore.FieldValue.serverTimestamp() }
             let result = await db.collection("users").doc(data.user.uid)
                 .collection("subprofiles")
                 .add(newSubprofile)
@@ -76,9 +79,22 @@ const profileStore = {
         // removeSubprofile:function({commit},user,profile){
 
         // },
-        // updateSubprofile:function({commit},user,profile){
-
-        // },
+        updateSubprofile:firestoreAction(({rootState,getters},payload)=>{ //payload = id , completionblock
+            const user = {...rootState.auth.user};
+            const subprofile = JSON.parse(JSON.stringify(getters.subprofileByID(payload.id))); //create a deep copy so that there is not mutation violation
+            subprofile.subprofile.completionblocks= payload.completionblocks; 
+            return db.collection('users').doc(user.uid)
+                .collection('subprofiles').doc(payload.id) 
+                .set(subprofile)
+                .then(
+                    ()=>{
+                        return {success:true}
+                    },
+                    (error)=>{
+                        return {success:false, error:error}
+                    }
+                )
+        }),
         /**
          *  When usiing bindig we need to ensure that we do not mutate the local store - will not be the same as the firebase  
          *  When making actions - append to the firebase 
@@ -122,7 +138,12 @@ const profileStore = {
             return state.subprofiles;
         },
         subprofileByID: (state) => (id) => {
-            return state.subprofiles.find(subprofile => subprofile.id == id)
+            if (state.subprofiles===null){
+                return null;
+            }
+            const subprofile = state.subprofiles.filter(e=> e.id ==id)
+            return subprofile.length===1 ? subprofile[0] : null;
+            // return state.subprofiles.find(subprofile => subprofile.subprofile.id == id)
         }
     }
 }

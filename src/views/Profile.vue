@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col overflow-hidden space-y-5">
+<div class="flex flex-col overflow-hidden space-y-5" >
+  <div v-if="!isLoading"> 
     <div v-if="!profile" class="my-5">
       <router-link to="/editprofile" class="inline btn-light-blue btn-lg"
         >Add Main Profile</router-link
@@ -47,7 +48,6 @@
           </div>
         </div>
       </section>
-
       <!-- education -->
       <section class="flex flex-col my-2">
         <h2 class="section-heading-xl">Education</h2>
@@ -95,11 +95,11 @@
       <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-2">
         <div
           class="p-5 shadow-xl rounded-lg bg-gray-300"
-          v-for="(ref, index) in subprofiles"
-          :key="ref.subprofile.univeristy"
+          v-for="ref in subprofiles"
+          :key="ref.id"
         >
           <router-link
-            :to="'subprofile/' + index"
+            :to="'subprofile/' + ref.id"
             class="btn btn-light-blue text-center"
             >Link</router-link
           >
@@ -116,6 +116,10 @@
       </div>
     </section>
   </div>
+  <div v-else>
+    <h2>LOADING</h2>
+  </div>
+</div>
 </template>
 
 <script>
@@ -124,11 +128,22 @@ import { mapGetters } from "vuex";
 export default {
   name: "Profile",
   props: ["user"],
+  created(){
+    // if(this.isLoading){
+    //   //Only bind to the profile store if the pages loses its content -> from refresh
+    //   this.$store.dispatch("bindProfileModule",this.user); 
+    // }
+  },
   computed: {
+    isLoading(){
+      return this.subprofiles===null;
+    },
     ...mapGetters({
       profile: "profile",
       subprofiles: "subprofiles",
     }),
+  },
+  methods:{
   },
   data: function () {
     return {

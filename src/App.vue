@@ -17,9 +17,18 @@ export default {
   components: {
     Nav,
   },
+  mounted(){
+    if (this.authedUser || this.isLoading){
+      this.$store.dispatch("bindProfileModule",this.authedUser); 
+    }
+  },
   computed:{
+    isLoading(){
+      return this.authedUser!==null&&this.subprofiles===null
+    },
     ...mapGetters({
       authedUser: 'user',
+      subprofiles: "subprofiles",
   })
   },
   data: function () {
@@ -27,17 +36,16 @@ export default {
     };
   },
   methods:{
-     login:function(){
-        //login user awit success 
-        
-        //set other profile and subprofile bindings with firestoer
+     login(){
+        //bind to the profile after loggin in 
         this.$store.dispatch('bindProfileModule',this.authedUser)
       },
-      register:function(){
-        this.$store.dispatch('bindProfileModule',this.authedUser)
+      register(){
+        console.log("Register")
+        // this.$store.dispatch('bindProfileModule',this.authedUser)
       },
       logout:function(){
-        this.$store.dispatch("unbindUserProfileAndSubprofiles");
+        // this.$store.dispatch("unbindUserProfileAndSubprofiles");
       }
   }
 };

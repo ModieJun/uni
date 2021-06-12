@@ -8,7 +8,7 @@ import profileStore from './profileStore'
 Vue.use(Vuex)
 
 const persistedStates = createPersistedState({
-  paths: ['auth', 'profile'], //paths should be the same as the key for the module // use key.STATE to only persist certain data 
+  paths: ['auth'], //paths should be the same as the key for the module // use key.STATE to only persist certain data 
 })
 
 export default new Vuex.Store({
